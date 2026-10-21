@@ -1,0 +1,1 @@
+import type {CapacitorConfig } from '@capacitor/cli';const config:CapacitorConfig={appId:'com.techempire.game',appName:'TECH EMPIRE',webDir:'dist',server:{androidScheme:'https'}};export default config;
