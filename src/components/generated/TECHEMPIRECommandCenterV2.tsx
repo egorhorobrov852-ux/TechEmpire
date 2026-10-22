@@ -13,6 +13,7 @@ type Save = {
   cash: number;
   day: number;
   city: string;
+  country: string;
   mode: string;
   owned: string[];
   tab: string;
@@ -51,6 +52,11 @@ const businesses: Biz[] = [{
   desc: 'Цифровые услуги для растущего делового района.'
 }];
 const tabs = ['Главная', 'Город', 'Бизнес', 'Финансы', 'Новости'];
+const countries: Record<string, { label: string; currency: string; multiplier: number; tax: number; cities: string[] }> = {
+  RU: { label: 'Россия', currency: 'RUB', multiplier: 1, tax: 20, cities: ['Екатеринбург', 'Москва', 'Санкт-Петербург', 'Казань', 'Новосибирск'] },
+  US: { label: 'США', currency: 'USD', multiplier: 1.45, tax: 24, cities: ['Нью-Йорк', 'Остин', 'Чикаго', 'Сиэтл', 'Лос-Анджелес'] },
+  DE: { label: 'Германия', currency: 'EUR', multiplier: 1.18, tax: 29, cities: ['Берлин', 'Мюнхен', 'Гамбург', 'Франкфурт', 'Кёльн'] }
+};
 const durations: Record<string, number> = {
   'Реальное время': 86400000,
   'Быстрый день': 7200000,
@@ -65,6 +71,7 @@ const defaultSave: Save = {
   cash: 500000,
   day: 1,
   city: 'Екатеринбург',
+  country: 'RU',
   mode: 'Вручную',
   owned: [],
   tab: 'Главная',
@@ -88,7 +95,7 @@ function loadSave(): Save {
       if (elapsed >= before) {
         const after = elapsed - before;
         const completed = 1 + Math.floor(after / interval);
-        const income = businesses.filter(b => s.owned.includes(b.id)).reduce((sum, business) => sum + business.daily, 0);
+        const income = businesses.filter(b => s.owned.includes(b.id)).reduce((sum, business) => sum + Math.round(business.daily * (countries[s.country] || countries.RU).multiplier), 0);
         s.cash += completed * income;
         s.day += completed;
         s.timeLeft = interval - after % interval;
@@ -112,7 +119,9 @@ export function TECHEMPIRECommandCenter() {
   const touchX = useRef<number | null>(null);
   const timerRef = useRef<number | undefined>(undefined);
   const owned = businesses.filter(b => save.owned.includes(b.id));
-  const income = owned.reduce((a, b) => a + b.daily, 0);
+  const profile = countries[save.country] || countries.RU;
+  const money = (n: number) => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: profile.currency, maximumFractionDigits: 0 }).format(n);
+  const income = owned.reduce((a, b) => a + Math.round(b.daily * profile.multiplier), 0);
   const valuation = save.cash + owned.reduce((a, b) => a + b.cost, 0);
   const update = (patch: Partial<Save>) => setSave(s => ({
     ...s,
@@ -137,7 +146,7 @@ export function TECHEMPIRECommandCenter() {
           setSave(s => ({
             ...s,
             day: s.day + 1,
-            cash: s.cash + businesses.filter(b => s.owned.includes(b.id)).reduce((a, b) => a + b.daily, 0),
+            cash: s.cash + businesses.filter(b => s.owned.includes(b.id)).reduce((a, b) => a + Math.round(b.daily * (countries[s.country] || countries.RU).multiplier), 0),
             lastTick: Date.now()
           }));
           notify('Новый игровой день! Доход начислен.');
@@ -187,12 +196,12 @@ export function TECHEMPIRECommandCenter() {
       notify('Этот бизнес уже твой');
       return;
     }
-    if (save.cash < b.cost) {
+    if (save.cash < Math.round(b.cost * profile.multiplier)) {
       notify('Не хватает капитала');
       return;
     }
     update({
-      cash: save.cash - b.cost,
+      cash: save.cash - Math.round(b.cost * profile.multiplier),
       owned: [...save.owned, b.id]
     });
     notify('Компания открыта: ' + b.name);
@@ -242,10 +251,8 @@ export function TECHEMPIRECommandCenter() {
               } as Record<string, string>)[save.tab]}</h1><p>Простые решения сегодня. Большая империя завтра.</p></div>{save.mode === 'Вручную' ? <button className="gold3" onClick={closeDay}>Завершить день →</button> : <div className="timer3"><small>ДО КОНЦА ДНЯ</small><b>{fmtTime(remaining)}</b><span>{save.mode}</span></div>}</div>
  <div className="stats3"><article><small>КАПИТАЛ</small><b>{money(save.cash)}</b><span>Деньги для новых решений</span></article><article><small>ДОХОД / ДЕНЬ</small><b className="green3">{money(income)}</b><span>От действующих бизнесов</span></article><article><small>СТОИМОСТЬ ИМПЕРИИ</small><b>{money(valuation)}</b><span>Капитал и активы</span></article><article><small>ИГРОВОЙ ДЕНЬ</small><b>№ {save.day}</b><button className="inline3" onClick={() => notify('Изменить темп можно в настройках времени ниже.')}>Сменить темп</button></article></div>
  {save.tab === 'Главная' && <><section className="panel3"><div className="panel-head3"><div><small>ТВОЯ ТОЧКА НА КАРТЕ</small><h2>{save.city} <em>● СИМУЛЯЦИЯ</em></h2><p>Выбери район и найди место для первой компании.</p></div><button className="outline3" onClick={() => setTabSmooth('Город')}>Исследовать город ↗</button></div><div className="city3"><City3D city={save.city} /><span className="pin3 pinA">⌂ <small>ЦЕНТР</small></span><span className="pin3 pinB">✦ <small>ДЕЛОВОЙ РАЙОН</small></span><label>ГОРОДСКАЯ ПАНОРАМА <em>ПРОТОТИП</em></label></div><div className="city-foot3"><span>НАСЕЛЕНИЕ <b>1,54 млн</b></span><span>ДЕЛОВАЯ АКТИВНОСТЬ <b className="green3">Растёт ↗</b></span><span>ТВОИ КОМПАНИИ <b>{owned.length}</b></span></div></section><div className="home-grid3"><section className="panel3"><small className="eyebrow3">ПРОСТОЙ СТАРТ</small><h2>Три шага к своей империи</h2><div className="steps3">{[['01', 'Выбери бизнес', 'Оцени цену и доход.'], ['02', 'Запусти дело', 'Открой компанию в один клик.'], ['03', 'Развивай город', 'Получай доход и расширяйся.']].map(x => <div key={x[0]}><i>{x[0]}</i><b>{x[1]}</b><small>{x[2]}</small></div>)}</div><button className="gold3 full3" onClick={() => setTabSmooth('Бизнес')}>Выбрать первый бизнес →</button></section><section className="panel3 next3"><small className="eyebrow3">СЛЕДУЮЩЕЕ РЕШЕНИЕ</small><div className="next-icon3">✦</div><h2>Открой первую компанию</h2><p>Кофейня, доставка или магазин — каждый вариант меняет экономику.</p><button className="inline3" onClick={() => setTabSmooth('Бизнес')}>Посмотреть варианты →</button></section></div></>}
- {save.tab === 'Город' && <section className="panel3"><div className="panel-head3"><div><small>КАРТА РАЗВИТИЯ</small><h2>{save.city}: город возможностей</h2><p>Городской ландшафт — визуальный прототип; настоящий 3D-мир готовится отдельно.</p></div><select className="city-picker3" value={save.city} onChange={e => update({
-              city: e.target.value
-            })}>{['Екатеринбург', 'Москва', 'Санкт-Петербург', 'Казань', 'Новосибирск'].map(c => <option key={c}>{c}</option>)}</select></div><div className="city3 large-city3"><City3D city={save.city} /><span className="pin3 pinA">⌂ <small>ЦЕНТР</small></span><span className="pin3 pinB">✦ <small>ДЕЛОВОЙ РАЙОН</small></span><label>ГОРОДСКАЯ ПАНОРАМА <em>ПРОТОТИП</em></label></div><div className="districts3">{[['ЦЕНТР', 'Торговля и услуги', 'Высокий спрос'], ['ДЕЛОВОЙ РАЙОН', 'Офисы и технологии', 'Растущий рынок'], ['ПРОМЗОНА', 'Производство', 'Умеренные затраты'], ['НОВЫЙ РАЙОН', 'Жильё и сервисы', 'Потенциал роста']].map(x => <article key={x[0]}><small>{x[0]}</small><b>{x[1]}</b><span>{x[2]}</span></article>)}</div></section>}
- {save.tab === 'Бизнес' && <><div className="panel-head3 business-title3"><div><small>ВЫБЕРИ СВОЙ ПЕРВЫЙ ШАГ</small><h2>Какой бизнес запустим?</h2><p>Цены и доходы — текущие игровые параметры.</p></div><b>КАПИТАЛ<br />{money(save.cash)}</b></div><div className="businesses3">{businesses.map(b => <article key={b.id}><div className="biz-icon3">{b.icon}</div><small>АКТИВ · {b.id.toUpperCase()}</small><h3>{b.name}</h3><p>{b.desc}</p><div className="biz-numbers3"><span>СТАРТ <b>{money(b.cost)}</b></span><span>ДОХОД / ДЕНЬ <b className="green3">{money(b.daily)}</b></span></div><button className="gold3 full3" disabled={save.owned.includes(b.id)} onClick={() => buy(b)}>{save.owned.includes(b.id) ? 'Уже открыто' : 'Открыть бизнес →'}</button></article>)}</div><section className="panel3 portfolio3"><small className="eyebrow3">ТВОЙ ПОРТФЕЛЬ</small><h2>Мои компании ({owned.length})</h2>{owned.length === 0 ? <p>Пока пусто. Выбери компанию выше — это займёт один клик.</p> : owned.map(b => <div className="owned3" key={b.id}><span>{b.icon}</span><b>{b.name}</b><small>Работает</small><strong>{money(b.daily)} / день</strong></div>)}</section></>}
+ {save.tab === 'Город' && <section className="panel3"><div className="panel-head3"><div><small>КАРТА РАЗВИТИЯ</small><h2>{save.city}: город возможностей</h2><p>Экономика выбранной страны: {profile.label}. Налоговая нагрузка модели — {profile.tax}%; значения пока игровые, а не официальная статистика.</p></div><select className="city-picker3" value={save.city} onChange={e => update({ city: e.target.value })}>{profile.cities.map(c => <option key={c}>{c}</option>)}</select></div><div className="city3 large-city3"><City3D city={save.city} /><span className="pin3 pinA">⌂ <small>ЦЕНТР</small></span><span className="pin3 pinB">✦ <small>ДЕЛОВОЙ РАЙОН</small></span><label>ГОРОДСКАЯ ПАНОРАМА <em>ПРОТОТИП</em></label></div><div className="districts3">{[['ЦЕНТР', 'Торговля и услуги', 'Высокий спрос'], ['ДЕЛОВОЙ РАЙОН', 'Офисы и технологии', 'Растущий рынок'], ['ПРОМЗОНА', 'Производство', 'Умеренные затраты'], ['НОВЫЙ РАЙОН', 'Жильё и сервисы', 'Потенциал роста']].map(x => <article key={x[0]}><small>{x[0]}</small><b>{x[1]}</b><span>{x[2]}</span></article>)}</div></section>}
+ {save.tab === 'Бизнес' && <><div className="panel-head3 business-title3"><div><small>ВЫБЕРИ СВОЙ ПЕРВЫЙ ШАГ</small><h2>Какой бизнес запустим?</h2><p>{profile.label} · {profile.currency}. Стоимость запуска и доходы зависят от выбранной экономической модели.</p></div><b>КАПИТАЛ<br />{money(save.cash)}</b></div><div className="businesses3">{businesses.map(b => <article key={b.id}><div className="biz-icon3">{b.icon}</div><small>АКТИВ · {b.id.toUpperCase()}</small><h3>{b.name}</h3><p>{b.desc}</p><div className="biz-numbers3"><span>СТАРТ <b>{money(b.cost)}</b></span><span>ДОХОД / ДЕНЬ <b className="green3">{money(b.daily)}</b></span></div><button className="gold3 full3" disabled={save.owned.includes(b.id)} onClick={() => buy(b)}>{save.owned.includes(b.id) ? 'Уже открыто' : 'Открыть бизнес →'}</button></article>)}</div><section className="panel3 portfolio3"><small className="eyebrow3">ТВОЙ ПОРТФЕЛЬ</small><h2>Мои компании ({owned.length})</h2>{owned.length === 0 ? <p>Пока пусто. Выбери компанию выше — это займёт один клик.</p> : owned.map(b => <div className="owned3" key={b.id}><span>{b.icon}</span><b>{b.name}</b><small>Работает</small><strong>{money(b.daily)} / день</strong></div>)}</section></>}
  {save.tab === 'Финансы' && <div className="finance-layout3"><section className="panel3"><small className="eyebrow3">ФИНАНСОВОЕ ПОЛОЖЕНИЕ</small><h2 className="balance3">{money(save.cash)}</h2><p>Доступный капитал</p><div className="bars3">{[32, 45, 38, 56, 47, 65, 59, 73, 66, 83, 76, 95].map((v, i) => <i key={i} style={{
                 height: v + '%'
               }} />)}</div><small>Динамика — демонстрационная до подключения полной истории операций.</small></section><section className="panel3"><small className="eyebrow3">ДЕНЕЖНЫЙ ПОТОК</small><h2>За игровой день</h2><div className="ledger3"><span>Доход компаний</span><b>{money(income)}</b></div><div className="ledger3"><span>Активные компании</span><b>{owned.length}</b></div><div className="ledger3"><span>Текущий капитал</span><b>{money(save.cash)}</b></div><p className="hint3">Доход начисляется автоматически по выбранному режиму или при ручном завершении дня.</p>{save.mode === 'Вручную' && <button className="gold3 full3" onClick={closeDay}>Начислить доход →</button>}</section></div>}
