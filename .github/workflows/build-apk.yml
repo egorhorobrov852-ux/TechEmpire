@@ -11,16 +11,19 @@ jobs:
   android:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    env:
-      TECH_EMPIRE_TOOLS_DIR: ${{ runner.temp }}/tech-empire-tools
-      XDG_DATA_HOME: ${{ runner.temp }}/tech-empire-tools/xdg/data
-      XDG_CONFIG_HOME: ${{ runner.temp }}/tech-empire-tools/xdg/config
-      XDG_CACHE_HOME: ${{ runner.temp }}/tech-empire-tools/xdg/cache
-      ANDROID_HOME: ${{ runner.temp }}/tech-empire-tools/android-sdk
-      ANDROID_USER_HOME: ${{ runner.temp }}/tech-empire-tools/android-user
-      GODOT_BIN: ${{ runner.temp }}/godot/Godot_v4.6.3-stable_linux.x86_64
     steps:
       - uses: actions/checkout@v4
+      - name: Configure writable tool directories
+        shell: bash
+        run: |
+          printf '%s\n' \
+            "TECH_EMPIRE_TOOLS_DIR=$RUNNER_TEMP/tech-empire-tools" \
+            "XDG_DATA_HOME=$RUNNER_TEMP/tech-empire-tools/xdg/data" \
+            "XDG_CONFIG_HOME=$RUNNER_TEMP/tech-empire-tools/xdg/config" \
+            "XDG_CACHE_HOME=$RUNNER_TEMP/tech-empire-tools/xdg/cache" \
+            "ANDROID_HOME=$RUNNER_TEMP/tech-empire-tools/android-sdk" \
+            "ANDROID_USER_HOME=$RUNNER_TEMP/tech-empire-tools/android-user" \
+            "GODOT_BIN=$RUNNER_TEMP/godot/Godot_v4.6.3-stable_linux.x86_64" >> "$GITHUB_ENV"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
