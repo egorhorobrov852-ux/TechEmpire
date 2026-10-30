@@ -1,0 +1,25 @@
+EMULATOR LEGACY SWIFTSHADER
+init 1 0x3000
+choose 1 1 0x3000
+context 71144960 70746624 1 0x3000
+GL b'OpenGL ES 3.0 SwiftShader 4.0.0.1' b'Google SwiftShader'
+Fragment limit 261
+UBO count 0 link 1
+UBO count 16 link 1
+UBO count 256 link 0 Fragment shader active uniforms exceed GL_MAX_FRAGMENT_UNIFORM_VECTORS (261)
+
+UBO count 260 link 0 Fragment shader active uniforms exceed GL_MAX_FRAGMENT_UNIFORM_VECTORS (261)
+
+exit=0
+
+HOST MESA LLVMPipe
+init 1 0x3000
+choose 1 1 0x3000
+context 722923200 723955936 1 0x3000
+GL b'OpenGL ES 3.2 Mesa 25.0.7-2+deb13u1' b'llvmpipe (LLVM 19.1.7, 256 bits)'
+Fragment limit 4096
+UBO count 0 link 1
+UBO count 16 link 1
+UBO count 256 link 1
+UBO count 260 link 1
+exit=0

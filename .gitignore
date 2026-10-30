@@ -1,0 +1,14 @@
+.godot/
+.tech-empire-tools/
+.superpowers/
+artifacts/
+output/
+build/
+node_modules/
+dist/
+/android/
+*.keystore
+*.jks
+*.log
+export_credentials.cfg
+.DS_Store
