@@ -1,0 +1,19 @@
+{
+  "name": "IT-студия",
+  "description": "Проекты для бизнеса. Выручка признаётся сразу, клиенты платят через три дня.",
+  "setup_cost": 16000000,
+  "base_price": 1800000,
+  "unit_cost": 0,
+  "capacity": 1.35,
+  "stock_capacity": 0,
+  "wage": 450000,
+  "lead_days": 0,
+  "shelf_life": 0,
+  "base_demand": 8,
+  "elasticity": 1.6,
+  "service": true,
+  "credit_days": 3,
+  "unit_label": "проектов",
+  "equipment_life": 1080,
+  "id": "studio"
+}

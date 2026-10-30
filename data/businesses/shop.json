@@ -1,0 +1,19 @@
+{
+  "name": "Мини-маркет",
+  "description": "Товары повседневного спроса. Запасы ограничены, поставка занимает два дня.",
+  "setup_cost": 9000000,
+  "base_price": 23000,
+  "unit_cost": 12000,
+  "capacity": 60,
+  "stock_capacity": 450,
+  "wage": 180000,
+  "lead_days": 2,
+  "shelf_life": 45,
+  "base_demand": 240,
+  "elasticity": 1.8,
+  "service": false,
+  "credit_days": 0,
+  "unit_label": "товаров",
+  "equipment_life": 1080,
+  "id": "shop"
+}

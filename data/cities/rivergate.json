@@ -1,0 +1,224 @@
+{
+  "id": "rivergate",
+  "name": "Ривергейт",
+  "country_id": "US",
+  "description": "Вымышленный город для экспериментального профиля США.",
+  "population": 42000,
+  "map_size": 36,
+  "districts": [
+    {
+      "id": "business",
+      "name": "Деловой центр",
+      "population": 6500,
+      "income_index": 1.3,
+      "labor_supply": 45,
+      "traffic": 1.15,
+      "color": "7997aa"
+    },
+    {
+      "id": "retail",
+      "name": "Торговый квартал",
+      "population": 9500,
+      "income_index": 1.1,
+      "labor_supply": 60,
+      "traffic": 1.25,
+      "color": "e7c36a"
+    },
+    {
+      "id": "residential",
+      "name": "Жилой район",
+      "population": 18000,
+      "income_index": 0.9,
+      "labor_supply": 110,
+      "traffic": 1.05,
+      "color": "88ad93"
+    },
+    {
+      "id": "industrial",
+      "name": "Промышленный район",
+      "population": 8000,
+      "income_index": 0.8,
+      "labor_supply": 70,
+      "traffic": 0.7,
+      "color": "ab9c91"
+    }
+  ],
+  "plots": [
+    {
+      "id": 0,
+      "name": "Деловой центр · 1",
+      "district": "business",
+      "x": -12,
+      "z": -12,
+      "purchase_price": 48000000,
+      "rent": 110000,
+      "traffic": 1.081,
+      "area": 90
+    },
+    {
+      "id": 1,
+      "name": "Деловой центр · 2",
+      "district": "business",
+      "x": -4,
+      "z": -12,
+      "purchase_price": 49000000,
+      "rent": 113000,
+      "traffic": 1.127,
+      "area": 95
+    },
+    {
+      "id": 2,
+      "name": "Деловой центр · 3",
+      "district": "business",
+      "x": 4,
+      "z": -12,
+      "purchase_price": 50000000,
+      "rent": 116000,
+      "traffic": 1.1729999999999998,
+      "area": 100
+    },
+    {
+      "id": 3,
+      "name": "Деловой центр · 4",
+      "district": "business",
+      "x": 12,
+      "z": -12,
+      "purchase_price": 51000000,
+      "rent": 119000,
+      "traffic": 1.2189999999999999,
+      "area": 105
+    },
+    {
+      "id": 4,
+      "name": "Торговый квартал · 1",
+      "district": "retail",
+      "x": -12,
+      "z": -4,
+      "purchase_price": 40000000,
+      "rent": 90000,
+      "traffic": 1.1749999999999998,
+      "area": 105
+    },
+    {
+      "id": 5,
+      "name": "Торговый квартал · 2",
+      "district": "retail",
+      "x": -4,
+      "z": -4,
+      "purchase_price": 41000000,
+      "rent": 93000,
+      "traffic": 1.225,
+      "area": 110
+    },
+    {
+      "id": 6,
+      "name": "Торговый квартал · 3",
+      "district": "retail",
+      "x": 4,
+      "z": -4,
+      "purchase_price": 42000000,
+      "rent": 96000,
+      "traffic": 1.275,
+      "area": 115
+    },
+    {
+      "id": 7,
+      "name": "Торговый квартал · 4",
+      "district": "retail",
+      "x": 12,
+      "z": -4,
+      "purchase_price": 43000000,
+      "rent": 99000,
+      "traffic": 1.3250000000000002,
+      "area": 120
+    },
+    {
+      "id": 8,
+      "name": "Жилой район · 1",
+      "district": "residential",
+      "x": -12,
+      "z": 4,
+      "purchase_price": 32000000,
+      "rent": 65000,
+      "traffic": 0.987,
+      "area": 120
+    },
+    {
+      "id": 9,
+      "name": "Жилой район · 2",
+      "district": "residential",
+      "x": -4,
+      "z": 4,
+      "purchase_price": 33000000,
+      "rent": 68000,
+      "traffic": 1.029,
+      "area": 125
+    },
+    {
+      "id": 10,
+      "name": "Жилой район · 3",
+      "district": "residential",
+      "x": 4,
+      "z": 4,
+      "purchase_price": 34000000,
+      "rent": 71000,
+      "traffic": 1.0710000000000002,
+      "area": 130
+    },
+    {
+      "id": 11,
+      "name": "Жилой район · 4",
+      "district": "residential",
+      "x": 12,
+      "z": 4,
+      "purchase_price": 35000000,
+      "rent": 74000,
+      "traffic": 1.1130000000000002,
+      "area": 135
+    },
+    {
+      "id": 12,
+      "name": "Промышленный район · 1",
+      "district": "industrial",
+      "x": -12,
+      "z": 12,
+      "purchase_price": 24000000,
+      "rent": 45000,
+      "traffic": 0.6579999999999999,
+      "area": 135
+    },
+    {
+      "id": 13,
+      "name": "Промышленный район · 2",
+      "district": "industrial",
+      "x": -4,
+      "z": 12,
+      "purchase_price": 25000000,
+      "rent": 48000,
+      "traffic": 0.6859999999999999,
+      "area": 140
+    },
+    {
+      "id": 14,
+      "name": "Промышленный район · 3",
+      "district": "industrial",
+      "x": 4,
+      "z": 12,
+      "purchase_price": 26000000,
+      "rent": 51000,
+      "traffic": 0.714,
+      "area": 145
+    },
+    {
+      "id": 15,
+      "name": "Промышленный район · 4",
+      "district": "industrial",
+      "x": 12,
+      "z": 12,
+      "purchase_price": 27000000,
+      "rent": 54000,
+      "traffic": 0.742,
+      "area": 150
+    }
+  ]
+}

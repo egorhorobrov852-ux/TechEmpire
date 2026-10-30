@@ -1,0 +1,19 @@
+{
+  "name": "Кофейня",
+  "description": "Кофе и свежая выпечка. Высокая маржа, но ингредиенты портятся.",
+  "setup_cost": 12000000,
+  "base_price": 30000,
+  "unit_cost": 10000,
+  "capacity": 42,
+  "stock_capacity": 250,
+  "wage": 200000,
+  "lead_days": 2,
+  "shelf_life": 7,
+  "base_demand": 180,
+  "elasticity": 2.1,
+  "service": false,
+  "credit_days": 0,
+  "unit_label": "заказов",
+  "equipment_life": 1080,
+  "id": "cafe"
+}

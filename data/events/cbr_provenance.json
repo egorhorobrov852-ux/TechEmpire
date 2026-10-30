@@ -1,0 +1,18 @@
+{
+  "source": "https://www.cbr.ru/scripts/XML_daily.asp?date_req=01/01/2025",
+  "request_date": "2025-01-01",
+  "source_date": "2024-12-29",
+  "published_at": null,
+  "effective_at": "2024-12-29",
+  "retrieved_at_utc": "2026-10-29",
+  "country": "RU",
+  "region": "",
+  "version": "cbr-daily-2024-12-29",
+  "verification_status": "verified_source",
+  "raw_file": "cbr_2025-01-01.xml",
+  "raw_sha256": "46698b61b7025792a5a8120fa9bfe1ebeee3f21d038eb22db54aaa4c808b99be",
+  "rates": {"USD": 101.6797, "EUR": 106.1028},
+  "quote_currency": "RUB",
+  "informational_only": true,
+  "publication_note": "The official XML reports 29.12.2024 for the requested holiday date 01.01.2025. A separate publication timestamp is not exposed and is deliberately null. No tax, interest-rate, or inflation values are inferred from FX."
+}

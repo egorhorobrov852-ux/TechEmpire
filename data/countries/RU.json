@@ -1,0 +1,55 @@
+{
+  "profile_version": 1,
+  "as_of": "2025-01-01",
+  "verification_status": "gameplay_calibration",
+  "legal_notice": "Упрощённая игровая модель. Параметры не являются актуальными налоговыми или юридическими рекомендациями.",
+  "inflation": 0.06,
+  "unemployment": 0.05,
+  "income_index": 1.0,
+  "labor_cost_index": 1.0,
+  "business_rules": {
+    "registration_fee": 50000,
+    "daily_profit_tax": true,
+    "tax_settlement_days": 30,
+    "inspection_every_days": 45
+  },
+  "credit_rules": {
+    "max_active_loans": 2,
+    "max_leverage": 1.2,
+    "min_loan": 1000000,
+    "terms_days": [
+      30,
+      90,
+      180
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://www.nalog.gov.ru/",
+      "publisher": "ФНС России",
+      "scope": "Справочная ссылка, не автоматическое подтверждение игровых ставок",
+      "published_at": null,
+      "effective_at": null,
+      "verification_status": "reference_only"
+    },
+    {
+      "url": "https://www.cbr.ru/hd_base/KeyRate/",
+      "publisher": "Банк России",
+      "scope": "Ключевая ставка, требуется отдельная проверка дат",
+      "published_at": null,
+      "effective_at": null,
+      "verification_status": "reference_only"
+    }
+  ],
+  "id": "RU",
+  "name": "Россия",
+  "currency": "RUB",
+  "symbol": "₽",
+  "profile_label": "Игровой профиль • не текущая статистика",
+  "experimental": false,
+  "start_capital": 50000000,
+  "amount_scale": 1.0,
+  "profit_tax": 0.15,
+  "annual_loan_rate": 0.22,
+  "city_id": "yekaterinburg"
+}
