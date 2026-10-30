@@ -58,6 +58,14 @@ adb shell am start -n com.techempire.game/com.godot.game.GodotAppLauncher
 
 Workflow `.github/workflows/build-apk.yml` запускается вручную, для PR и push в main/feat/**. Он устанавливает Java17, Godot4.6.3, SDK и соответствующие шаблоны, выполняет проверки и экспорт. APK и SHA256 появляются в артефакте `TECH-EMPIRE-Android-debug`; диагностические логи сохраняются даже при ошибке. Наличие workflow не означает, что удалённый запуск уже выполнялся: фактический статус проверок фиксируется в `docs/VERIFICATION.md`.
 
+Нативная версия находится в ветке `feat/playable-android` и draft PR #1; `main` сохраняет предыдущий прототип до проверки изменений. Для ручного запуска в GitHub Actions выберите эту ветку в поле Branch. Через CLI:
+
+```bash
+gh workflow run build-apk.yml --ref feat/playable-android
+```
+
+Фактически прошедшая нативная CI-сборка: https://github.com/egorhorobrov852-ux/TechEmpire/actions/runs/40998681203 . Артефакт APK доступен 14 дней; после истечения срока запустите workflow повторно.
+
 ## Release и магазин
 
 Release APK использует `godot --headless --path . --export-release Android artifacts/TECH-EMPIRE-release.apk` после установки release credentials через переменные окружения Godot или локальные секретные настройки экспорта. Никогда не добавляйте release keystore и пароль в Git или APK. Не используйте debug key для магазина. Для Google Play включите Gradle build и формат AAB в отдельном release preset, установите Android source template, настройте ваш applicationId, versionCode, подпись и требования магазина. Текущая задача производит sideload debug APK; публикация в магазине не выполняется.

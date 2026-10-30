@@ -23,6 +23,6 @@ Spec: docs/superpowers/specs/2026-10-29-tech-empire-design.md
 - [x] 3. Город: scenes/city/city.tscn, scripts/world/city.gd. Ограниченная 3D карта, районы, выбор, камера, touch, подсветка и бизнесы.
 - [x] 4. UI и сохранения: project.godot, scenes/main_menu/main.tscn, scripts/ui/, scripts/save_system/, scripts/data_sync/. Полный игровой цикл, темы, AIRA, обучение, резервное сохранение. Headless smoke сценарий.
 - [x] 5. Android: export_presets.cfg, tools/, .github/workflows/build-apk.yml. Установка SDK/templates, импорт, тесты, debug export, подпись, артефакт; release документируется отдельно.
-- [ ] 6. Интеграция: полные тесты, исправления, рендер, APK, проверка честного статуса. README, docs/VERIFICATION.md, git checkpoint, архив исходников и APK.
+- [x] 6. Интеграция: полные тесты, исправления, рендер, APK, проверка честного статуса. README, docs/VERIFICATION.md, git checkpoint, архив исходников и APK.
 
 Разделение разрешено заданием пользователя «автономная команда». Реализацию ведут независимые специалисты без совместного редактирования файлов; интеграция и финальная проверка централизованы. Внешняя публикация/слияние в main не требуется.
