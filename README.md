@@ -4,6 +4,8 @@
 
 ## Запуск
 
+Для установки на телефон используйте обычную HTTPS-ссылку: [скачать TECH-EMPIRE-debug.apk](https://github.com/egorhorobrov852-ux/TechEmpire/releases/download/v0.1.0-preview.1/TECH-EMPIRE-debug.apk). [Страница предварительной версии и исходники](https://github.com/egorhorobrov852-ux/TechEmpire/releases/tag/v0.1.0-preview.1). Ссылки на `/workspace/...` относятся к рабочему окружению разработчика и не предназначены для скачивания на телефон.
+
 Откройте `project.godot` в Godot 4.6.3 и нажмите F5 (основная сцена — `scenes/main_menu/main.tscn`). Либо:
 
 ```bash

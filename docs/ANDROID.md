@@ -40,6 +40,8 @@ python3 tools/android/inspect_apk.py artifacts/TECH-EMPIRE-debug.apk --report ar
 
 ## Установка на телефон
 
+Прямая ссылка без входа в GitHub: [TECH-EMPIRE-debug.apk](https://github.com/egorhorobrov852-ux/TechEmpire/releases/download/v0.1.0-preview.1/TECH-EMPIRE-debug.apk). Откройте её в браузере телефона, дождитесь скачивания и запустите файл из «Загрузок». APK и архив исходников также доступны на [странице предварительной версии](https://github.com/egorhorobrov852-ux/TechEmpire/releases/tag/v0.1.0-preview.1).
+
 1. Скопировать `TECH-EMPIRE-debug.apk` на Android 7.0+ с ARM64.
 2. Разрешить установку из выбранного файлового менеджера/браузера, открыть APK, установить.
 3. Игра работает офлайн, регистрация и компьютер для последующих запусков не нужны.
