@@ -1,0 +1,74 @@
+name: Publish verified Android preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/playable-android]
+    paths: [.github/workflows/publish-preview.yml]
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: v0.1.0-preview.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download previously verified native APK
+        uses: actions/download-artifact@v4
+        with:
+          name: TECH-EMPIRE-Android-debug
+          run-id: 40998681203
+          github-token: ${{ github.token }}
+          path: release-files
+      - name: Verify exact CI artifact and prepare source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd release-files
+          sha256sum --check --strict TECH-EMPIRE-debug.apk.sha256
+          printf '%s\n' '1592f62e409197e0c9c433619b372c873892a4324d1d5f253cf3ad614c34699a  TECH-EMPIRE-debug.apk' | sha256sum --check --strict
+          cd ..
+          git archive --format=zip --prefix=TECH-EMPIRE/ --output=release-files/TECH-EMPIRE-source.zip HEAD
+          cd release-files
+          sha256sum TECH-EMPIRE-source.zip > TECH-EMPIRE-source.zip.sha256
+      - name: Upload draft assets and publish preview download
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" --json isDraft --jq '.isDraft' > "$RUNNER_TEMP/release-draft.txt"; then
+            if [[ "$(cat "$RUNNER_TEMP/release-draft.txt")" != true ]]; then
+              printf 'Preview already published; existing assets are preserved.\n'
+              gh release view "$RELEASE_TAG" --json url --jq .url
+              exit 0
+            fi
+          else
+            gh release create "$RELEASE_TAG" --draft --prerelease --latest=false --target "$GITHUB_SHA" --title 'TECH EMPIRE 0.1.0 — Android preview'
+          fi
+          cat > "$RUNNER_TEMP/preview-notes.md" <<'NOTES'
+          Предварительная нативная версия TECH EMPIRE на Godot 4.6.3.
+
+          Скачайте **TECH-EMPIRE-debug.apk** в Assets ниже и откройте на Android. Требуется Android 7.0/API24+, ARM64 либо x86_64. При необходимости разрешите установку из браузера или файлового менеджера. Для последующих запусков компьютер и интернет не нужны.
+
+          APK получен из успешной CI-сборки 40998681203: 231 проверка и 1080 игровых дней, проверка подписи и ресурсов пакета. SHA256: `1592f62e409197e0c9c433619b372c873892a4324d1d5f253cf3ad614c34699a`.
+
+          Установка, главное меню и 3D-город на Android 11/API30 проверялись локальной сборкой того же игрового кода с отдельной debug-подписью. Полный мобильный игровой сценарий, физический телефон и FPS ещё не проверены.
+
+          **TECH-EMPIRE-source.zip** содержит полный проект и инструкции. Файлы **.sha256** содержат контрольные суммы. Отчёты и реальные снимки Android находятся в `docs/` исходного проекта.
+
+          Это первая играбельная версия, а не вся долгосрочная концепция. Профили стран являются игровой моделью. Main не изменён; исходники и развитие — в ветке `feat/playable-android`, PR #1.
+          NOTES
+          gh release upload "$RELEASE_TAG" \
+            release-files/TECH-EMPIRE-debug.apk \
+            release-files/TECH-EMPIRE-debug.apk.sha256 \
+            release-files/TECH-EMPIRE-source.zip \
+            release-files/TECH-EMPIRE-source.zip.sha256 --clobber
+          gh release edit "$RELEASE_TAG" --target "$GITHUB_SHA" --notes-file "$RUNNER_TEMP/preview-notes.md" --prerelease --latest=false --draft=false
+          gh release view "$RELEASE_TAG" --json url,isDraft,assets
+          printf '[Download APK](https://github.com/%s/releases/download/%s/TECH-EMPIRE-debug.apk)\n' "$GITHUB_REPOSITORY" "$RELEASE_TAG" >> "$GITHUB_STEP_SUMMARY"
